@@ -16,9 +16,14 @@ int main() {
     std::cout << "Enter a step: " << std::endl;
     std::cin >> d;
 
+    if (a % 3 == 0)
+        {
+            std::cout << a << " ";
+        }
+
     if (d > 0)
     {
-        for (int i = a; i <= b; i += d)
+        for (int i = a + d; i <= b; i += d)
         {
             if (i % 3 == 0)
             {
@@ -29,7 +34,7 @@ int main() {
         
     } else if (d < 0)
     {
-        for (int i = a; i >= b; i += d)
+        for (int i = a + d; i >= b; i += d)
         {
             if (i % 3 == 0)
             {
@@ -37,14 +42,9 @@ int main() {
             }
 
         }
-    } else
-    {
-        if (a % 3 == 0)
-        {
-            std::cout << a << " ";
-        }
-        
     }
+
+    std::cout << "Eto vse";
 
     return 0;
 }
