@@ -65,7 +65,8 @@ void checkInput(int &empty)
 // Проверка и установка длины массива
 void checkoutArrLength(int &length, int maxLength)
 {
-    std::cout << "Enter array length (1 <= n <= " << maxLength << "): " << std::endl;
+    std::cout << "Enter array length (1 <= n <= " << maxLength << ")\n" << 
+    "(Reccomend under 100): " << std::endl;
     checkInput(length);
 
     if (length > maxLength || length < 1)
@@ -177,7 +178,8 @@ void createArr(int &n, int *arr, int &mode, int maxLength)
     showArr(n, arr);
 }
 
-// Решение подзадачи 1
+// Решение подзадачи 1:
+// Произведение элементов массива с четными номерами;
 void task1(int n, int *arr)
 {
     long long mult = 1;
@@ -206,7 +208,9 @@ void task1(int n, int *arr)
     
 }
 
-// Решение подзадачи 2
+// Решение подзадачи 2:
+// Сумма элементов массива, расположенных между первым и последним
+// нулевыми элементами.
 void task2(int n, int *arr) {
     int firstZero = 0;
     long long sum = 0, partSum = 0;
