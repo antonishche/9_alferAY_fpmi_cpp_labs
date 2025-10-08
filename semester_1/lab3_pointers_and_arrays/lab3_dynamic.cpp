@@ -35,8 +35,6 @@ void checkInput(double &empty);
 void showArr(int n, double *arr);
 void swap(double &a, double &b);
 double randomNumber(std::mt19937 &gen, double a, double b);
-/*--------------------------------*/
-void moveElem(int copyId, double *arr, int lastNegative);
 
 // solve task with usage of
 // dymanic arrays
