@@ -205,7 +205,7 @@ void task1(int n, int arr[][maxSize])
             // Есть положительный элемент - новый столб
             if (arr[j][i] > 0)
             {
-                continue;
+                break;
             }
 
             // Проверяем элемент в столбце
@@ -214,7 +214,7 @@ void task1(int n, int arr[][maxSize])
                 checkMax = arr[j][i];
             }
         }
-        max = checkMax;
+        max = checkMax > max ? checkMax : max;
     }
 
     std::cout << "1.Max elem: ";
@@ -238,7 +238,7 @@ void task2(int n, int arr[][maxSize])
     {
         for (size_t j = 0; j <= i; j++)
         {
-            if (arr[i][j] < 0)
+            if (arr[i][n-1-j] < 0)
             {
                 numOfNegative += 1;
             }
