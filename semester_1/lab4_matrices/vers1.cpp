@@ -7,26 +7,25 @@
 #include <iostream>
 #include <random>
 
-const int maxSize = 32;
-
 // Основные функции
-void createMatrix(int &n, int arr[][maxSize], int &mode);
-void solveTasks(int n, int arr[][maxSize]);
+void createMatrix(int &n, int**& matrix, int &mode);
+void solveTasks(int n, int** matrix);
+void deleteMatrix(int n, int**& matrix);
 
 // Подфункции
 void chooseMode(int &mode);
 void checkoutMatrixSizes(int &size);
-void fillArr(int mode, int n, int arr[][maxSize]);
-void keyboardEnter(int n, int arr[][maxSize]);
-void randomEnter(int n, int arr[][maxSize]);
+void fillArr(int mode, int n, int**& matrix);
+void keyboardEnter(int n, int**& matrix);
+void randomEnter(int n, int**& matrix);
 void limitsForRandom(int &a, int &b);
 /*--------------------------------*/
-void task1(int n, int arr[][maxSize]);
-void task2(int n, int arr[][maxSize]);
+void task1(int n, int** matrix);
+void task2(int n, int** matrix);
 
 // Вспомогательные функции
 void checkInput(int &empty);
-void showMatrix(int n, int arr[][maxSize]);
+void showMatrix(int n, int** matrix);
 void swap(int &a, int &b);
 int randomNumber(std::mt19937 &gen, int a, int b);
 
@@ -34,19 +33,38 @@ int main()
 {
     int n,
         mode;                       // вручную или рандом
-    int arr[maxSize][maxSize] = {}; // использовал статику
+    
+    int** matrix;
 
-    createMatrix(n, arr, mode);
-    solveTasks(n, arr);
+    createMatrix(n, matrix, mode);
+    solveTasks(n, matrix);
+    deleteMatrix(n, matrix);
+
     return 0;
 }
 
 // Создание целочисленной матрицы
-void createMatrix(int &n, int arr[][maxSize], int &mode)
+void createMatrix(int &n, int**& matrix, int &mode)
 {
     checkoutMatrixSizes(n);
+
+    matrix = new int* [n];
+    for (size_t row = 0; row < n; row++)
+    {
+        matrix[row] = new int[n];
+    }
+    
     chooseMode(mode);
-    fillArr(mode, n, arr);
+    fillArr(mode, n, matrix);
+}
+
+// Удаление матрицы
+void deleteMatrix(int n, int**& matrix) {
+    for (size_t row = 0; row < n; row++)
+    {
+        delete[] matrix[row];
+    }
+    delete[] matrix;
 }
 
 // Проверка ввода
@@ -62,12 +80,13 @@ void checkInput(int &empty)
 // Проверка и установка длины массива
 void checkoutMatrixSizes(int &size)
 {
-    std::cout << "Enter square martix size (1 <= n <= " << maxSize << ")" << std::endl;
+    std::cout << "Enter square martix size" << std::endl;
     checkInput(size);
 
-    if (size > maxSize || size < 1)
+    if (size < 1)
     {
-        std::cout << "Check limits!" << std::endl;
+        std::cout << "Must be at least 1.\n"
+                  "Be careful next time" << std::endl;
         exit(1);
     }
 }
@@ -81,26 +100,27 @@ void chooseMode(int &mode)
 }
 
 // Заполнение массива
-void fillArr(int mode, int n, int arr[][maxSize])
+void fillArr(int mode, int n, int**& matrix)
 {
     switch (mode)
     {
     case 0:
-        keyboardEnter(n, arr);
-        showMatrix(n, arr);
+        keyboardEnter(n, matrix);
+        showMatrix(n, matrix);
         break;
     case 1:
-        randomEnter(n, arr);
-        showMatrix(n, arr);
+        randomEnter(n, matrix);
+        showMatrix(n, matrix);
         break;
     default:
-        std::cout << "Something were wr...";
+        std::cout << "Something were wrong!\n"
+                  << "Be careful while entering.";
         std::exit(1);
     }
 }
 
 // Ввод с клавиатуры
-void keyboardEnter(int n, int arr[][maxSize])
+void keyboardEnter(int n, int**& matrix)
 {
     for (int i = 0; i < n; i++)
     {
@@ -112,13 +132,13 @@ void keyboardEnter(int n, int arr[][maxSize])
             }
 
             std::cout << "Elem " << j + 1 << ": ";
-            checkInput(arr[i][j]);
+            checkInput(matrix[i][j]);
         }
     }
 }
 
 // Рандомный ввод
-void randomEnter(int n, int arr[][maxSize])
+void randomEnter(int n, int**& matrix)
 {
     int a, b;
     limitsForRandom(a, b);
@@ -129,7 +149,7 @@ void randomEnter(int n, int arr[][maxSize])
     {
         for (size_t j = 0; j < n; j++)
         {
-            arr[i][j] = randomNumber(gen, a, b);
+            matrix[i][j] = randomNumber(gen, a, b);
         }
     }
 }
@@ -172,29 +192,29 @@ void swap(int &a, int &b)
 }
 
 // Показать марицу
-void showMatrix(int n, int arr[][maxSize])
+void showMatrix(int n, int** matrix)
 {
     for (size_t i = 0; i < n; i++)
     {
         for (size_t j = 0; j < n; j++)
         {
-            std::cout << arr[i][j] << " ";
+            std::cout << matrix[i][j] << " ";
         }
         std::cout << std::endl;
     }
 }
 
 // Решение задач
-void solveTasks(int n, int arr[][maxSize])
+void solveTasks(int n, int** matrix)
 {
-    task1(n, arr);
-    task2(n, arr);
+    task1(n, matrix);
+    task2(n, matrix);
 }
 
 // Задача 1
 // Найти максимальный элемент в тех столбцах, которые не содержат
 // положительных элементов;
-void task1(int n, int arr[][maxSize])
+void task1(int n, int** matrix)
 {
     int max = -101;
     for (size_t i = 0; i < n; i++)
@@ -203,15 +223,15 @@ void task1(int n, int arr[][maxSize])
         for (size_t j = 0; j < n; j++)
         {
             // Есть положительный элемент - новый столб
-            if (arr[j][i] > 0)
+            if (matrix[j][i] > 0)
             {
                 break;
             }
 
             // Проверяем элемент в столбце
-            if (arr[j][i] > checkMax)
+            if (matrix[j][i] > checkMax)
             {
-                checkMax = arr[j][i];
+                checkMax = matrix[j][i];
             }
         }
         max = checkMax > max ? checkMax : max;
@@ -231,14 +251,14 @@ void task1(int n, int arr[][maxSize])
 // Задача 2
 // Подсчитать количество отрицательных элементов в нижнем пра-
 // вом треугольнике матрицы, включая диагональ.
-void task2(int n, int arr[][maxSize])
+void task2(int n, int** matrix)
 {
     int numOfNegative = 0;
     for (size_t i = 0; i < n; i++)
     {
         for (size_t j = 0; j <= i; j++)
         {
-            if (arr[i][n-1-j] < 0)
+            if (matrix[i][n-1-j] < 0)
             {
                 numOfNegative += 1;
             }
