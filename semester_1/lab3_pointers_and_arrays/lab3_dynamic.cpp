@@ -262,7 +262,7 @@ void changeArr(int n, double *arr)
     std::cout << "Enter positive X (abs min value for elems): \n";
     checkInput(lim);
 
-    for (int i = 1; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
         if (std::abs(arr[i]) > lim)
         {

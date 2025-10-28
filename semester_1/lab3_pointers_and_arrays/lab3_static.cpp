@@ -214,6 +214,7 @@ void task1(int n, int *arr)
 void task2(int n, int *arr) {
     int firstZero = 0;
     long long sum = 0, partSum = 0;
+    bool enoughZeros = false;
 
     while (arr[firstZero] != 0 && firstZero < n - 1)
     {
@@ -226,14 +227,21 @@ void task2(int n, int *arr) {
         {
             sum += partSum;
             partSum = 0;
+            enoughZeros  = true;
         } else
         {
             partSum += arr[i];
         }
     }
 
-    std::cout << "\n2.Sum between zero-elements (if such exist): "
+    if (!enoughZeros)
+    {
+        std::cout << "Not enough null-elements for the task\n";
+    } else 
+    {
+        std::cout << "\n2.Sum between zero-elements (if such exist): "
               << sum << "\n\n";
+    }
     
 }
 
