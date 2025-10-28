@@ -9,35 +9,56 @@
 #include <random>
 
 // Основные функции
-void createMatrix(int &n, int**& matrix, int &mode);
-void sortMatrix(int n, int**& matrix);
-void choseSort(int typeOfSort, int howToSort, int n, int**& matrix);
-void deleteMatrix(int n, int**& matrix);
+void createMatrix(int &n, int **&matrix, int &mode);
+void sortMatrix(int n, int **&matrix);
+void choseSort(int typeOfSort, Comparator comp, int n, int **&matrix);
+void deleteMatrix(int n, int **&matrix);
 
 // Подфункции
 void chooseMode(int &mode);
 void checkoutMatrixSizes(int &size);
-void fillArr(int mode, int n, int**& matrix);
-void keyboardEnter(int n, int**& matrix);
-void randomEnter(int n, int**& matrix);
+void fillArr(int mode, int n, int **&matrix);
+void keyboardEnter(int n, int **&matrix);
+void randomEnter(int n, int **&matrix);
 void limitsForRandom(int &a, int &b);
+// +
+void choseHowToSort(int& howToSort);
+void choseTypeOfSort(int& typeOfSort);
 
 // Вспомогательные функции
 void checkInput(int &empty);
-void showMatrix(int n, int** matrix);
+void showMatrix(int n, int **matrix);
 void swap(int &a, int &b);
 int randomNumber(std::mt19937 &gen, int a, int b);
-bool compare(int a, int b, int howToSort);
 
 // Сортировки
-void bubbleSort(int howToSort, int n, int**& matrix);
+void insertionSort(Comparator comp, int n, int**& matrix);
+void quickSort(Comparator comp, int n, int**& matrix);
+void selectionSort(Comparator comp, int n, int**& matrix);
+void bubbleSort(Comparator comp, int n, int**& matrix);
+void countingSort(Comparator comp, int n, int**& matrix);
+void mergeSort(Comparator comp, int n, int**& matrix);
+
+// КОМПАРАТОР:
+
+// Тип для компаратора
+typedef bool (*Comparator)(int, int);
+
+// Базовые компараторы
+bool ascending(int a, int b) { return a > b; }
+bool descending(int a, int b) { return a < b; }
+
+// Получить компаратор
+Comparator getComparator(int howToSort) {
+    return (howToSort == 0) ? ascending : descending;
+}
 
 int main()
 {
     int n,
         mode; // вручную или рандом
-    
-    int** matrix;
+
+    int **matrix;
 
     createMatrix(n, matrix, mode);
     sortMatrix(n, matrix);
@@ -47,22 +68,23 @@ int main()
 }
 
 // Создание целочисленной матрицы
-void createMatrix(int &n, int**& matrix, int &mode)
+void createMatrix(int &n, int **&matrix, int &mode)
 {
     checkoutMatrixSizes(n);
 
-    matrix = new int* [n];
+    matrix = new int *[n];
     for (size_t row = 0; row < n; row++)
     {
         matrix[row] = new int[n];
     }
-    
+
     chooseMode(mode);
     fillArr(mode, n, matrix);
 }
 
 // Удаление матрицы
-void deleteMatrix(int n, int**& matrix) {
+void deleteMatrix(int n, int **&matrix)
+{
     for (size_t row = 0; row < n; row++)
     {
         delete[] matrix[row];
@@ -89,7 +111,8 @@ void checkoutMatrixSizes(int &size)
     if (size < 1)
     {
         std::cout << "Must be at least 1.\n"
-                  "Be careful next time" << std::endl;
+                     "Be careful next time"
+                  << std::endl;
         exit(1);
     }
 }
@@ -103,7 +126,7 @@ void chooseMode(int &mode)
 }
 
 // Заполнение массива
-void fillArr(int mode, int n, int**& matrix)
+void fillArr(int mode, int n, int **&matrix)
 {
     switch (mode)
     {
@@ -123,7 +146,7 @@ void fillArr(int mode, int n, int**& matrix)
 }
 
 // Ввод с клавиатуры
-void keyboardEnter(int n, int**& matrix)
+void keyboardEnter(int n, int **&matrix)
 {
     for (int i = 0; i < n; i++)
     {
@@ -141,7 +164,7 @@ void keyboardEnter(int n, int**& matrix)
 }
 
 // Рандомный ввод
-void randomEnter(int n, int**& matrix)
+void randomEnter(int n, int **&matrix)
 {
     int a, b;
     limitsForRandom(a, b);
@@ -195,7 +218,7 @@ void swap(int &a, int &b)
 }
 
 // Показать марицу
-void showMatrix(int n, int** matrix)
+void showMatrix(int n, int **matrix)
 {
     for (size_t i = 0; i < n; i++)
     {
@@ -207,90 +230,121 @@ void showMatrix(int n, int** matrix)
     }
 }
 
-// Отсортировать матрицу
-void sortMatrix(int n, int**& matrix)
-{
-    int howToSort;
+// Выбрать как сортировать
+void choseHowToSort(int& howToSort) {
     std::cout << "Sort by\n ascending (0) or descending (1): ";
     checkInput(howToSort);
+
     if (howToSort != 0 && howToSort != 1)
     {
         std::cout << "Invalid value!\nBe careful while entering.";
         std::exit(0);
     }
-    
-    int typeOfSort;
+}
+
+// Выбрать тип сортировки
+void choseTypeOfSort(int& typeOfSort) {
     std::cout << "Sort type:\n"
-              << "bubble (0), counting (1), ..."
-              << std::endl;
+              << "insertion (1), quicksort (2), selection (3), bubble(4), counting (5), merge (6):";
     checkInput(typeOfSort);
-    
-    choseSort(typeOfSort, howToSort, n, matrix);
 }
 
-// Сравнить элементы
-bool compare(int a, int b, int howToSort) {
-    if (howToSort = 0)
-    {
-        return a > b;
-    } else if (howToSort = 1)
-    {
-        return a < b;
-    }
+// Отсортировать матрицу
+void sortMatrix(int n, int **&matrix)
+{
+    int howToSort;
+    choseHowToSort(howToSort);
+
+    Comparator comp = getComparator(howToSort);
+
+    int typeOfSort;
+    choseTypeOfSort(typeOfSort);
+
+    choseSort(typeOfSort, comp, n, matrix);
     
-    
-    return howToSort  ? a > b : a < b;
 }
 
-void choseSort(int typeOfSort, int howToSort, int n, int**& matrix) {
+void choseSort(int typeOfSort, Comparator comp, int n, int **&matrix)
+{
     switch (typeOfSort)
     {
-    case 0:
-        bubbleSort(howToSort, n, matrix);
-        showMatrix(n, matrix);
-        break;
-    
-    case 1:
-        countingSort(howToSort, n, matrix);
-        showMatrix(n, matrix);
-        break;
-
-    default:
-        break;
+    case 1: insertionSort(comp, n, matrix); break;
+    case 2: quickSort(comp, n, matrix); break;
+    case 3: selectionSort(comp, n, matrix); break;
+    case 4: bubbleSort(comp, n, matrix); break;
+    case 5: countingSort(comp, n, matrix); break;
+    case 6: mergeSort(comp, n, matrix); break;
+    default: std::cout << "Unknown sort type."; std::exit(1);
     }
-} 
-
-// Сортировка пузырьком
-void bubbleSort(int howToSort, int n, int**& matrix) {
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < n-1; j++)
-        {
-            if (
-                compare(matrix[i][j], matrix[i][j + 1], howToSort)
-            )
-            {
-                int currId = j;
-                while (
-                    currId >= 0 &&
-                    compare(matrix[i][currId], matrix[i][currId+1], howToSort)
-                )
-                {
-                    swap(matrix[i][currId], matrix[i][currId+1]);
-                    currId -= 1;
-                }
-                
-            }
-            
-        }
-           
-    }
-    
 }
 
-// Сортировка подсчётом
-void countingSort(int howToSort, int n, int**& matrix) {
-    std::cout << "Out of service (temporarily).\nWe apologize.";
-    std::exit(0);
+// Сортировка вставками (0)
+void insertionSort(Comparator comp, int n, int**& matrix) {
+    for (size_t i = 0; i < n; i++)
+    {
+        for (size_t j = 0; j < n; j++)
+        {
+            int key = matrix[i][j];
+            int k = j - 1;
+
+            while (j >= 0 && comp(matrix[i][k], key)) {
+                matrix[i][k + 1] = matrix[i][k];
+                k--;
+            }
+            matrix[i][k + 1] = key;
+        }
+    }
+}
+
+// Быстрая сортировка (2)
+void quickSort(Comparator comp, int n, int**& matrix) {
+    std::cout << "Will add this one soon.\nTry another one.";
+    std::exit(1);
+}
+
+// Сортировка выбором (3)
+void selectionSort(Comparator comp, int n, int**& matrix) {
+    std::cout << "Will add this one soon.\nTry another one.";
+    std::exit(1);
+}
+
+// Сортировка пузырьком (4)
+void bubbleSort(Comparator comp, int n, int**& matrix) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n - 1; j++) {
+            for (int k = 0; k < n - j - 1; k++) {
+                if (comp(matrix[i][k], matrix[i][k + 1])) {
+                    swap(matrix[i][k], matrix[i][k + 1]);
+                }
+            }
+        }
+    }
+}
+
+// Сортировка подсчётом (5)
+void countingSort(Comparator comp, int n, int**& matrix) {
+    // const int RANGE = 201;
+    
+    // for (size_t i = 0; i < n; i++)
+    // {
+    //     int count[RANGE] = {0};
+    //     int output[n];
+
+    //     for (size_t j = 0; j < n; j++)
+    //     {
+    //         count[matrix[i][j] + 100]++;
+    //     }
+
+
+        
+    // }
+    std::cout << "Will add this one soon.\nTry another one.";
+    std::exit(1);
+}
+
+// Сортировка слиянием (6)
+void mergeSort(Comparator comp, int n, int**& matrix) {
+    std::cout << "Will add this one soon.\nTry another one.";
+    std::exit(1);
 }
 
