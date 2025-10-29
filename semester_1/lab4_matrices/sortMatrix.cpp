@@ -11,7 +11,6 @@
 // Основные функции
 void createMatrix(int &n, int **&matrix, int &mode);
 void sortMatrix(int n, int **&matrix);
-void choseSort(int typeOfSort, Comparator comp, int n, int **&matrix);
 void deleteMatrix(int n, int **&matrix);
 
 // Подфункции
@@ -21,7 +20,6 @@ void fillArr(int mode, int n, int **&matrix);
 void keyboardEnter(int n, int **&matrix);
 void randomEnter(int n, int **&matrix);
 void limitsForRandom(int &a, int &b);
-// +
 void choseHowToSort(int& howToSort);
 void choseTypeOfSort(int& typeOfSort);
 
@@ -30,34 +28,22 @@ void checkInput(int &empty);
 void showMatrix(int n, int **matrix);
 void swap(int &a, int &b);
 int randomNumber(std::mt19937 &gen, int a, int b);
+void reverseArray(int* arr, int n);
 
 // Сортировки
-void insertionSort(Comparator comp, int n, int**& matrix);
-void quickSort(Comparator comp, int n, int**& matrix);
-void selectionSort(Comparator comp, int n, int**& matrix);
-void bubbleSort(Comparator comp, int n, int**& matrix);
-void countingSort(Comparator comp, int n, int**& matrix);
-void mergeSort(Comparator comp, int n, int**& matrix);
+void insertionSort(int n, int**& matrix);
+void quickSort(int n, int**& matrix);
+void selectionSort(int n, int**& matrix);
+void bubbleSort(int n, int**& matrix);
+void countingSort(int n, int**& matrix);
+void mergeSort(int n, int**& matrix);
 
-// КОМПАРАТОР:
-
-// Тип для компаратора
-typedef bool (*Comparator)(int, int);
-
-// Базовые компараторы
-bool ascending(int a, int b) { return a > b; }
-bool descending(int a, int b) { return a < b; }
-
-// Получить компаратор
-Comparator getComparator(int howToSort) {
-    return (howToSort == 0) ? ascending : descending;
-}
+// Выбор сортировки
+void choseSort(int typeOfSort, int howToSort, int n, int **&matrix);
 
 int main()
 {
-    int n,
-        mode; // вручную или рандом
-
+    int n, mode;
     int **matrix;
 
     createMatrix(n, matrix, mode);
@@ -93,9 +79,9 @@ void deleteMatrix(int n, int **&matrix)
 }
 
 // Проверка ввода
-void checkInput(int &num)
+void checkInput(int &empty)
 {
-    if (!(std::cin >> num))
+    if (!(std::cin >> empty))
     {
         std::cout << "Invalid input!" << std::endl;
         exit(1);
@@ -230,6 +216,13 @@ void showMatrix(int n, int **matrix)
     }
 }
 
+// Переворот массива
+void reverseArray(int* arr, int n) {
+    for (int i = 0; i < n / 2; i++) {
+        swap(arr[i], arr[n - 1 - i]);
+    }
+}
+
 // Выбрать как сортировать
 void choseHowToSort(int& howToSort) {
     std::cout << "Sort by\n ascending (0) or descending (1): ";
@@ -255,39 +248,44 @@ void sortMatrix(int n, int **&matrix)
     int howToSort;
     choseHowToSort(howToSort);
 
-    Comparator comp = getComparator(howToSort);
-
     int typeOfSort;
     choseTypeOfSort(typeOfSort);
 
-    choseSort(typeOfSort, comp, n, matrix);
+    choseSort(typeOfSort, howToSort, n, matrix);
     
+    std::cout << "Sorted matrix:\n";
+    showMatrix(n, matrix);
 }
 
-void choseSort(int typeOfSort, Comparator comp, int n, int **&matrix)
+void choseSort(int typeOfSort, int howToSort, int n, int **&matrix)
 {
     switch (typeOfSort)
     {
-    case 1: insertionSort(comp, n, matrix); break;
-    case 2: quickSort(comp, n, matrix); break;
-    case 3: selectionSort(comp, n, matrix); break;
-    case 4: bubbleSort(comp, n, matrix); break;
-    case 5: countingSort(comp, n, matrix); break;
-    case 6: mergeSort(comp, n, matrix); break;
-    default: std::cout << "Unknown sort type."; std::exit(1);
+    case 1: insertionSort(n, matrix); break;
+    case 2: quickSort(n, matrix); break;
+    case 3: selectionSort(n, matrix); break;
+    case 4: bubbleSort(n, matrix); break;
+    case 5: countingSort(n, matrix); break;
+    case 6: mergeSort(n, matrix); break;
+    default: 
+        std::cout << "Unknown sort type."; 
+        std::exit(1);
+    }
+
+    if (howToSort == 1) {
+        for (int i = 0; i < n; i++) {
+            reverseArray(matrix[i], n);
+        }
     }
 }
 
 // Сортировка вставками (0)
-void insertionSort(Comparator comp, int n, int**& matrix) {
-    for (size_t i = 0; i < n; i++)
-    {
-        for (size_t j = 0; j < n; j++)
-        {
+void insertionSort(int n, int**& matrix) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 1; j < n; j++) {
             int key = matrix[i][j];
             int k = j - 1;
-
-            while (j >= 0 && comp(matrix[i][k], key)) {
+            while (k >= 0 && matrix[i][k] > key) {
                 matrix[i][k + 1] = matrix[i][k];
                 k--;
             }
@@ -297,23 +295,52 @@ void insertionSort(Comparator comp, int n, int**& matrix) {
 }
 
 // Быстрая сортировка (2)
-void quickSort(Comparator comp, int n, int**& matrix) {
-    std::cout << "Will add this one soon.\nTry another one.";
-    std::exit(1);
+void quickSortRecursive(int** matrix, int row, int low, int high) {
+    if (low < high) {
+        int pivot = matrix[row][high];
+        int i = low - 1;
+        
+        for (int j = low; j < high; j++) {
+            if (matrix[row][j] <= pivot) {
+                i++;
+                swap(matrix[row][i], matrix[row][j]);
+            }
+        }
+        swap(matrix[row][i + 1], matrix[row][high]);
+        int pi = i + 1;
+        
+        quickSortRecursive(matrix, row, low, pi - 1);
+        quickSortRecursive(matrix, row, pi + 1, high);
+    }
+}
+
+void quickSort(int n, int**& matrix) {
+    for (int i = 0; i < n; i++) {
+        quickSortRecursive(matrix, i, 0, n - 1);
+    }
 }
 
 // Сортировка выбором (3)
-void selectionSort(Comparator comp, int n, int**& matrix) {
-    std::cout << "Will add this one soon.\nTry another one.";
-    std::exit(1);
+void selectionSort(int n, int**& matrix) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n - 1; j++) {
+            int minIndex = j;
+            for (int k = j + 1; k < n; k++) {
+                if (matrix[i][k] < matrix[i][minIndex]) {
+                    minIndex = k;
+                }
+            }
+            swap(matrix[i][j], matrix[i][minIndex]);
+        }
+    }
 }
 
 // Сортировка пузырьком (4)
-void bubbleSort(Comparator comp, int n, int**& matrix) {
+void bubbleSort(int n, int**& matrix) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n - 1; j++) {
             for (int k = 0; k < n - j - 1; k++) {
-                if (comp(matrix[i][k], matrix[i][k + 1])) {
+                if (matrix[i][k] > matrix[i][k + 1]) {
                     swap(matrix[i][k], matrix[i][k + 1]);
                 }
             }
@@ -322,29 +349,77 @@ void bubbleSort(Comparator comp, int n, int**& matrix) {
 }
 
 // Сортировка подсчётом (5)
-void countingSort(Comparator comp, int n, int**& matrix) {
-    // const int RANGE = 201;
-    
-    // for (size_t i = 0; i < n; i++)
-    // {
-    //     int count[RANGE] = {0};
-    //     int output[n];
+void countingSort(int n, int**& matrix) {
+    const int RANGE = 201;
+    const int OFFSET = 100;
 
-    //     for (size_t j = 0; j < n; j++)
-    //     {
-    //         count[matrix[i][j] + 100]++;
-    //     }
+    for (int i = 0; i < n; i++) {
+        int count[RANGE] = {0};
 
+        // Подсчёт элементов
+        for (int j = 0; j < n; j++) {
+            count[matrix[i][j] + OFFSET]++;
+        }
 
-        
-    // }
-    std::cout << "Will add this one soon.\nTry another one.";
-    std::exit(1);
+        // Восстановление отсортированного массива (по возрастанию)
+        int index = 0;
+        for (int j = 0; j < RANGE; j++) {
+            while (count[j] > 0) {
+                matrix[i][index++] = j - OFFSET;
+                count[j]--;
+            }
+        }
+    }
 }
 
 // Сортировка слиянием (6)
-void mergeSort(Comparator comp, int n, int**& matrix) {
-    std::cout << "Will add this one soon.\nTry another one.";
-    std::exit(1);
+void merge(int** matrix, int row, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+    
+    int leftArr[n1], rightArr[n2];
+    
+    for (int i = 0; i < n1; i++)
+        leftArr[i] = matrix[row][left + i];
+    for (int i = 0; i < n2; i++)
+        rightArr[i] = matrix[row][mid + 1 + i];
+    
+    int i = 0, j = 0, k = left;
+    
+    while (i < n1 && j < n2) {
+        if (leftArr[i] <= rightArr[j]) {
+            matrix[row][k] = leftArr[i];
+            i++;
+        } else {
+            matrix[row][k] = rightArr[j];
+            j++;
+        }
+        k++;
+    }
+    
+    while (i < n1) {
+        matrix[row][k] = leftArr[i];
+        i++; k++;
+    }
+    
+    while (j < n2) {
+        matrix[row][k] = rightArr[j];
+        j++; k++;
+    }
+}
+
+void mergeSortRecursive(int** matrix, int row, int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+        mergeSortRecursive(matrix, row, left, mid);
+        mergeSortRecursive(matrix, row, mid + 1, right);
+        merge(matrix, row, left, mid, right);
+    }
+}
+
+void mergeSort(int n, int**& matrix) {
+    for (int i = 0; i < n; i++) {
+        mergeSortRecursive(matrix, i, 0, n - 1);
+    }
 }
 
