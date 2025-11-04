@@ -11,6 +11,8 @@
 #include <iostream>
 #include <random>
 
+std::mt19937 gen(time(0));
+
 // Основные функции
 void createArr(int &n, int *arr, int &mode, int maxLength);
 void solveTasks(int n, int *arr);
@@ -31,7 +33,7 @@ void task2(int n, int *arr);
 void checkInput(int &empty);
 void showArr(int n, int arr[]);
 void swap(int &a, int &b);
-int randomNumber(std::mt19937 &gen, int a, int b);
+int randomNumber(int a, int b);
 //
 void moveElem(int copyId, int *arr, int lastNegative);
 
@@ -114,16 +116,11 @@ void keyboardEnter(int n, int arr[])
 }
 
 // Рандомный ввод
-void randomEnter(int n, int *arr)
-{
+void randomEnter(int n, int *arr) {
     int a, b;
     limitsForRandom(a, b);
-
-    std::mt19937 gen(45218965);
-
-    for (int i = 0; i < n; i++)
-    {
-        arr[i] = randomNumber(gen, a, b);
+    for (int i = 0; i < n; i++) {
+        arr[i] = randomNumber(a, b);
     }
 }
 
@@ -144,8 +141,7 @@ void limitsForRandom(int &a, int &b)
 }
 
 // Рандомное число
-int randomNumber(std::mt19937 &gen, int a, int b)
-{
+int randomNumber(int a, int b) {
     std::uniform_int_distribution<int> dist(a, b);
     return dist(gen);
 }
