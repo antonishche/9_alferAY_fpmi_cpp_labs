@@ -10,7 +10,19 @@ public:
         std::cout << "освобождение памяти\n";
     }
 
+    DynamicInt (const DynamicInt& other)
+        : p(new int()) {
+            *p = *other.p;
+        }
+
     int get () { return *p; }
+
+    DynamicInt& operator=(const DynamicInt& other) {
+    if (this != &other) {
+        *p = *other.p;
+    }
+    return *this;
+}
 };
 
 DynamicInt::DynamicInt(int i) {
@@ -18,7 +30,7 @@ DynamicInt::DynamicInt(int i) {
 }
 
 // Возвращает отрицательное значение *ob.p
-int GetNegative(DynamicInt ob) {
+int GetNegative(DynamicInt& ob) {
     return -ob.get();
 }
 
