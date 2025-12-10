@@ -47,7 +47,6 @@ Vector& Vector::operator=(const Vector& other) {
 }
 
 Vector::~Vector() {
-    std::cout << "Deleted:" << std::endl;
     delete[] data_;
 }
 
