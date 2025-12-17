@@ -4,8 +4,13 @@
 #include "task1.h"
 #include <iostream>
 #include <climits>
+#include <exception>
+#include <stdexcept>
 
 int find_min_digit(int num) {
+
+    if (num < 1) throw std::invalid_argument("Negative input");
+
     int min_digit = 9;
     
     if (num == 0) return 0;

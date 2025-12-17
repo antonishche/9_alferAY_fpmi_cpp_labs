@@ -15,3 +15,13 @@ target_link_libraries(run_tests task1_lib GTest::gtest GTest::gtest_main)
 enable_testing()
 # gtest_discover_tests()
 add_test(NAME task1_tests COMMAND run_tests)
+
+
+# --- Настройка для Boost.Test (Заголовочная версия) ---
+# Эта версия проще, она включает весь код тестов напрямую
+set(BOOST_ROOT "/opt/homebrew")
+add_executable(run_boost_tests boost_tests/test_task1_boost.cpp)
+# Связываем с нашей библиотекой алгоритмов
+target_link_libraries(run_boost_tests task1_lib)
+# Указываем компилятору, где искать заголовки Boost
+target_include_directories(run_boost_tests PRIVATE /opt/homebrew/include)

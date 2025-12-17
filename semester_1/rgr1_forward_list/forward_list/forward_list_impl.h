@@ -1,10 +1,9 @@
 #pragma once
 
-#include <iterator>
 #include <iostream>
+#include <iterator>
 
 class ForwardList {
-
 private:
     struct Node {
         int32_t value_;
@@ -13,6 +12,23 @@ private:
         explicit Node(int value) : value_(value), next_(nullptr) {
         }
     };
+
+    Node* head_;
+    Node* tail_;
+    size_t size_;
+
+    void PushBack(int32_t value) {
+        Node* new_node = new Node(value);
+
+        if (tail_ == nullptr) {
+            head_ = tail_ = new_node;
+        } else {
+            tail_->next_ = new_node;
+            tail_ = new_node;
+        }
+
+        size_++;
+    }
 
 public:
     class ForwardListIterator {
@@ -40,7 +56,7 @@ public:
         }
 
         bool operator==(const ForwardListIterator& other) const {
-            // your code goes here
+            return position_ == other.position_;
         }
 
         bool operator!=(const ForwardListIterator& other) const {
@@ -54,7 +70,7 @@ public:
         pointer operator->() {
             return &position_->value_;
         }
-        
+
     private:
         Node* position_;
     };
@@ -63,9 +79,11 @@ public:
     // 1) non-const version
     ForwardListIterator begin() {
         // your code goes here
+        return ForwardListIterator(head_);
     }
     ForwardListIterator end() {
         // your code goes here
+        return ForwardListIterator(nullptr);
     }
 
     // 2) const version
@@ -73,9 +91,11 @@ public:
     // (is it exactly ForwardListIterator?)
     ForwardListIterator begin() const {
         // your code goes here
+        return ForwardListIterator(head_);
     }
     ForwardListIterator end() const {
         // your code goes here
+        return ForwardListIterator(nullptr);
     }
 
     // default constructor
@@ -84,7 +104,8 @@ public:
     // copy constructor
     ForwardList(const ForwardList& rhs);
 
-    // Constructs a ForwardList with `count` copies of elements with value `value`.
+    // Constructs a ForwardList with `count` copies of elements with value
+    // `value`.
     ForwardList(size_t count, int32_t value);
 
     // Constructs a ForwardList with std::initializer_list<int32_t>

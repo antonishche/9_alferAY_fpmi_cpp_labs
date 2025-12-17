@@ -2,10 +2,10 @@
 #include "../src/task1.h"
 
 TEST(RemoveMinDigitsTest, BasicTest) {
-    EXPECT_EQ(remove_min_digits(12341), 234);    // Удаляем минимальную цифру 1
-    EXPECT_EQ(remove_min_digits(555), 0);        // Все цифры одинаковые
-    EXPECT_EQ(remove_min_digits(98765), 9876);   // Удаляем минимальную 5
-    EXPECT_EQ(remove_min_digits(1234321), 23432); // Удаляем 1, несколько вхождений
+    EXPECT_EQ(remove_min_digits(12341), 234);
+    EXPECT_EQ(remove_min_digits(555), 0);
+    EXPECT_EQ(remove_min_digits(98765), 9876);
+    EXPECT_EQ(remove_min_digits(1234321), 23432);
 }
 
 TEST(RemoveMinDigitsTest, WithZero) {
