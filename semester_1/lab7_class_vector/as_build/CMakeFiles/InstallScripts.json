@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/as_build/cmake_install.cmake",
+		"/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/as_build/multiplication/cmake_install.cmake",
+		"/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/as_build/vector/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

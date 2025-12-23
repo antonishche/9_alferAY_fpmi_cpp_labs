@@ -1,10 +1,10 @@
 #ifndef TASK1_H
 #define TASK1_H
 
-// Функция для удаления минимальных цифр
+// удалениe цифр
 int remove_min_digits(int num);
 
-// Вспомогательная функция для поиска минимальной цифры
+// поиск минимальной
 int find_min_digit(int num);
 
 #endif

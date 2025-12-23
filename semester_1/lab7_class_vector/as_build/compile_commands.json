@@ -1,0 +1,26 @@
+[
+{
+  "directory": "/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/as_build",
+  "command": "/usr/bin/c++  -I/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/contrib/catch  -Wall -Wextra -Wpedantic -g -g -fsanitize=address,undefined,leak -fno-sanitize-recover=all -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=26.1 -o CMakeFiles/contrib_catch_main.dir/contrib/catch/catch_main.cpp.o -c /Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/contrib/catch/catch_main.cpp",
+  "file": "/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/contrib/catch/catch_main.cpp",
+  "output": "CMakeFiles/contrib_catch_main.dir/contrib/catch/catch_main.cpp.o"
+},
+{
+  "directory": "/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/as_build/multiplication",
+  "command": "/usr/bin/c++  -I/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/multiplication -I/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/contrib/catch  -Wall -Wextra -Wpedantic -g -g -fsanitize=address,undefined,leak -fno-sanitize-recover=all -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=26.1 -o CMakeFiles/test_multiplication.dir/test.cpp.o -c /Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/multiplication/test.cpp",
+  "file": "/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/multiplication/test.cpp",
+  "output": "multiplication/CMakeFiles/test_multiplication.dir/test.cpp.o"
+},
+{
+  "directory": "/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/as_build/vector",
+  "command": "/usr/bin/c++  -I/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/vector -I/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/contrib/catch  -Wall -Wextra -Wpedantic -g -g -fsanitize=address,undefined,leak -fno-sanitize-recover=all -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=26.1 -o CMakeFiles/test_vector.dir/vector_impl.cpp.o -c /Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/vector/vector_impl.cpp",
+  "file": "/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/vector/vector_impl.cpp",
+  "output": "vector/CMakeFiles/test_vector.dir/vector_impl.cpp.o"
+},
+{
+  "directory": "/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/as_build/vector",
+  "command": "/usr/bin/c++  -I/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/vector -I/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/contrib/catch  -Wall -Wextra -Wpedantic -g -g -fsanitize=address,undefined,leak -fno-sanitize-recover=all -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=26.1 -o CMakeFiles/test_vector.dir/test.cpp.o -c /Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/vector/test.cpp",
+  "file": "/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/vector/test.cpp",
+  "output": "vector/CMakeFiles/test_vector.dir/test.cpp.o"
+}
+]

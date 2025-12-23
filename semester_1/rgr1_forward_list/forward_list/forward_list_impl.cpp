@@ -36,10 +36,10 @@ void ForwardList::PopFront() {
 }
 
 int32_t ForwardList::Front() const {
-    if (head_ == nullptr) {
-        throw std::runtime_error("List is empty");
+    if (head_ != nullptr) {
+        // throw std::runtime_error("List is empty");
+        return head_->value_;
     }
-    return head_->value_;
 }
 
 size_t ForwardList::Size() const {

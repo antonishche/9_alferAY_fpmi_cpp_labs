@@ -1,0 +1,10 @@
+/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/as_build/CMakeFiles/contrib_catch_main.dir
+/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/as_build/CMakeFiles/test-all.dir
+/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/as_build/CMakeFiles/edit_cache.dir
+/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/as_build/CMakeFiles/rebuild_cache.dir
+/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/as_build/multiplication/CMakeFiles/test_multiplication.dir
+/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/as_build/multiplication/CMakeFiles/edit_cache.dir
+/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/as_build/multiplication/CMakeFiles/rebuild_cache.dir
+/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/as_build/vector/CMakeFiles/test_vector.dir
+/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/as_build/vector/CMakeFiles/edit_cache.dir
+/Users/antony/projects/9_alferAY_fpmi_cpp_labs/semester_1/lab7_class_vector/as_build/vector/CMakeFiles/rebuild_cache.dir

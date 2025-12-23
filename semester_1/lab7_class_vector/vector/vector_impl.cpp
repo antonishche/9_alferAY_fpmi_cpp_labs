@@ -6,40 +6,32 @@
 #include <exception>
 #include <stdexcept>
 
-Vector::Vector() : data_(nullptr), size_(0), capacity_(0) {}
+Vector::Vector() : data_(nullptr), size_(0), capacity_(0) {
+}
 
-Vector::Vector(size_t size) 
-    : data_(new int[size]), size_(size), capacity_(size) {
-    for (size_t i = 0; i < size_; i++)
-    {
+Vector::Vector(size_t size) : data_(new int[size]), size_(size), capacity_(size) {
+    for (size_t i = 0; i < size_; i++) {
         data_[i] = 0;
     }
 }
 
 Vector::Vector(std::initializer_list<int> list)
-    : data_(new int[list.size()]),
-      size_(list.size()),
-      capacity_(list.size()) {
+    : data_(new int[list.size()]), size_(list.size()), capacity_(list.size()) {
     size_t index = 0;
-    for (int num : list)
-    {
+    for (int num : list) {
         data_[index++] = num;
     }
 }
 
 Vector::Vector(const Vector& other)
-    : data_(new int[other.capacity_]),
-      size_(other.size_),
-      capacity_(other.capacity_) {
-        for (size_t i = 0; i < size_; i++)
-        {
-            data_[i] = other.data_[i];
-        }   
+    : data_(new int[other.capacity_]), size_(other.size_), capacity_(other.capacity_) {
+    for (size_t i = 0; i < size_; i++) {
+        data_[i] = other.data_[i];
+    }
 }
 
 Vector& Vector::operator=(const Vector& other) {
-    if (this != &other)
-    {
+    if (this != &other) {
         Vector temp(other);
         Swap(temp);
     }
@@ -73,16 +65,14 @@ int& Vector::operator[](size_t index) {
 }
 
 const int& Vector::At(size_t index) const {
-    if (index >= size_)
-    {
+    if (index >= size_) {
         throw std::out_of_range("Error: index is out of range.");
     }
     return data_[index];
 }
 
 int& Vector::At(size_t index) {
-    if (index >= size_)
-    {
+    if (index >= size_) {
         throw std::out_of_range("Error: index is out of range.");
     }
     return data_[index];
@@ -97,12 +87,10 @@ size_t Vector::Capacity() const {
 }
 
 void Vector::PushBack(int elem) {
-    if (size_ == capacity_)
-    {
-        capacity_ = capacity_ == 0 ? 1 : capacity_ * 2;
+    if (size_ == capacity_) {
+        capacity_ = capacity_ == 0u ? 1u : capacity_ * 2u;
         int* new_data = new int[capacity_];
-        for (size_t i = 0; i < size_; i++)
-        {
+        for (size_t i = 0; i < size_; i++) {
             new_data[i] = data_[i];
         }
 
@@ -110,14 +98,13 @@ void Vector::PushBack(int elem) {
         data_ = new_data;
     }
 
-    data_[size_++] = elem; 
+    data_[size_++] = elem;
 }
 
 void Vector::PopBack() {
-    if (size_ > 0)
-    {
+    if (size_ > 0) {
         size_--;
-    }  
+    }
 }
 
 void Vector::Clear() {
@@ -125,27 +112,23 @@ void Vector::Clear() {
 }
 
 void Vector::Reserve(size_t new_capacity) {
-    if (capacity_ < new_capacity)
-    {
+    if (capacity_ < new_capacity) {
         capacity_ = new_capacity;
         int* new_data = new int[new_capacity];
-        for (size_t i = 0; i < size_; i++)
-        {
+        for (size_t i = 0; i < size_; i++) {
             new_data[i] = data_[i];
         }
 
         delete[] data_;
         data_ = new_data;
-    }   
+    }
 }
 
 std::ostream& operator<<(std::ostream& os, const Vector& v) {
     os << "[";
 
-    for (size_t i = 0; i < v.Size(); i++)
-    {
-        if (i == v.Size() - 1)
-        {
+    for (size_t i = 0; i < v.Size(); i++) {
+        if (i == v.Size() - 1) {
             os << v[i];
         } else {
             os << v[i] << ", ";
