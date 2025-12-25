@@ -2,7 +2,7 @@
 
 #include <cassert>
 #include <chrono>
-#include <iostream>
+
 #include <iomanip>
 
 namespace time_utility {

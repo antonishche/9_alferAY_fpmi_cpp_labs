@@ -56,7 +56,7 @@ size_t allElemsNum(const std::vector<int>& vec) {
 }
 
 int countEqual(const std::vector<int>& vec) {
-    std::cout << "Введите заданное число:";
+    std::cout << "Введите число, количество элементов, равных которому, нужно найти:";
 
     int target;
     if (!(std::cin >> target)) {
@@ -78,7 +78,7 @@ int countEqual(const std::vector<int>& vec) {
 }
 
 int coutWithCondition(const std::vector<int>& vec) {
-    std::cout << "Введите n:";
+    std::cout << "Введите число, количество чисел, больших которого, нужно найти:";
 
     int n;
     if (!(std::cin >> n)) {
