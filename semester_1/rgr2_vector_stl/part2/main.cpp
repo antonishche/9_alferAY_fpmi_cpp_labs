@@ -65,7 +65,7 @@ void printTrainsIf(const std::vector<Train>& trains,
     }
 
     if (noTrains) {
-        std::cout << "Отсутствуют";
+        std::cout << "Отсутствуют\n";
     }
 }
 
@@ -249,6 +249,29 @@ void printTrainsCurrentTypeFromDestination(const std::vector<Train>& trains) {
                   });
 }
 
+void printFastestTrain(const std::vector<Train>& trains) {
+    std::string destination = getDestination();
+
+    const Train* fastest = nullptr;
+
+    for (const Train& train : trains) {
+        if (train.GetDestination() == destination) {
+            if (fastest == nullptr ||
+                train.GetTravellingTime() < fastest->GetTravellingTime()) {
+                fastest = &train;
+            }
+        }
+    }
+
+    if (fastest == nullptr) {
+        throw std::runtime_error("не найдено поездов, движущихся в " +
+                                 destination + ".");
+    }
+
+    std::cout << "*\nСамый быстрый поезд, следующий в " + destination + ":\n";
+    printTrain(*fastest);
+}
+
 int main() {
 
     setlocale(LC_ALL, "Russian");
@@ -262,6 +285,9 @@ int main() {
         std::vector<Train> trains;
 
         fillVectorFromFile(trains, in);
+        if (trains.size() == 0) {
+            throw std::runtime_error("не удалось добавить поездов.");
+        }
         printTrainsIf(
             trains, "Полученные поезда:", [](const Train&) { return true; });
 
@@ -275,6 +301,8 @@ int main() {
         printTrainsFromDestination(trains);
 
         printTrainsCurrentTypeFromDestination(trains);
+
+        printFastestTrain(trains);
 
     } catch (const std::exception& e) {
         std::cerr << "Ошибка: " << e.what() << std::endl;
