@@ -29,3 +29,7 @@ void Author::setSurame(const std::string &surname) {
 void Author::setFatherName(const std::string &fatherName) {
     father_name_ = fatherName;
 }
+
+bool Author::operator==(const Author &other) const {
+    return name_ == other.name_ && surname_ == other.surname_ && father_name_ == other.father_name_;
+}

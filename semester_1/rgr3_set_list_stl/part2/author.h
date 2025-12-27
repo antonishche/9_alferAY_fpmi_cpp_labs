@@ -18,6 +18,8 @@ public:
     void setSurame(const std::string &surname);
     void setFatherName(const std::string &fatherName);
 
+    bool operator==(const Author &other) const;
+
 private:
     std::string name_;
     std::string surname_;

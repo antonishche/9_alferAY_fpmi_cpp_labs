@@ -35,6 +35,15 @@ size_t checkNum(const std::string &str) {
     return static_cast<size_t>(input);
 }
 
+std::string stringFromConsole() {
+    std::string str;
+    if (!getline(std::cin, str)) {
+        throw std::runtime_error("не удалось записать строку.");
+    }
+
+    return str;
+}
+
 void putAuthorInRightPlace(const Author &newAuthor, std::list<Author> &authors) {
     std::list<Author>::iterator it = authors.begin();
 
@@ -45,21 +54,34 @@ void putAuthorInRightPlace(const Author &newAuthor, std::list<Author> &authors) 
     authors.insert(it, newAuthor);
 }
 
+Author writeAuthorFromStr(const std::string &authorFullName) {
+    std::stringstream authorStream(authorFullName);
+    std::string name, surname, fatherName;
+    if (authorStream >> name >> fatherName >> surname) {
+        Author newAuthor(name, surname, fatherName);
+        return newAuthor;
+    } else {
+        throw std::runtime_error("не удалось распознать автора \"" + authorFullName + "\".");
+    }
+}
+
 std::list<Author> packAuthors(const std::string &str) {
     std::string checkedStr = checkStrForEmpty(str);
     if (checkedStr.empty())
         return std::list<Author>();
 
     std::list<Author> authors;
+
     std::stringstream ss(checkedStr);
     std::string authorFullName;
 
     while (getline(ss, authorFullName, ',')) {
-        std::stringstream authStream(authorFullName);
-        std::string name, surname, fatherName;
-        if (authStream >> name >> fatherName >> surname) {
-            Author newAuthor(name, surname, fatherName);
+
+        try {
+            Author newAuthor = writeAuthorFromStr(authorFullName);
             putAuthorInRightPlace(newAuthor, authors);
+        } catch (const std::exception &e) {
+            std::cerr << "Ошибка: " << e.what() << std::endl;
         }
     }
 
@@ -91,9 +113,7 @@ Book writeBookFromStr(const std::string &bookStr) {
     for (size_t i = 0; i < count && start != std::string::npos; i++) {
         std::string str = bookStr.substr(start, end - start);
 
-        if (str.find_first_not_of(' ') == std::string::npos) {
-            str = "";
-        }
+        str = checkStrForEmpty(str);
 
         try {
             switch (i) {
@@ -193,13 +213,10 @@ void printBooks(const std::list<Book> &library) {
     std::cout << "==============================\n";
 }
 
-void Add(std::list<Book> &library) {
+void AddBook(std::list<Book> &library) {
     std::cout << "Для добавления книги введите строку типа:\n777; Иван Иванович Иванов, Петр Петрович Петров; Название книги; 2024;\n";
 
-    std::string bookStr;
-    if (!getline(std::cin, bookStr)) {
-        throw std::runtime_error("не удалось записать строку.");
-    }
+    std::string bookStr = stringFromConsole();
 
     try {
         Book newBook = writeBookFromStr(bookStr);
@@ -212,7 +229,133 @@ void Add(std::list<Book> &library) {
     }
 }
 
-void Delete(std::list<Book> &library) {
+std::list<Book>::iterator findBookByTitle(std::list<Book> &library) {
+    std::list<Book>::iterator it = library.begin();
+
+    try {
+        std::string titleStr = checkStrForEmpty(stringFromConsole());
+
+        while (it != library.end() && it->getTitle() != titleStr) {
+            ++it;
+        }
+
+        if (it == library.end()) {
+            std::cout << "Книга \"" << titleStr << "\" не найдена.\n";
+        } else {
+            std::cout << "------------------------------\nКнига найдена:\n------------------------------\n";
+            printBook(*it);
+        }
+
+    } catch (const std::exception &e) {
+        std::cerr << "Ошибка: " << e.what() << std::endl;
+    }
+
+    return it;
+}
+
+void DeleteBook(std::list<Book> &library) {
+    std::cout << "Для удаления книги введите её название:\n";
+
+    std::list<Book>::iterator it = findBookByTitle(library);
+
+    if (it != library.end()) {
+        try {
+            library.erase(it);
+            std::cout << "Удаление завершено успешно.\n";
+            printBooks(library);
+        } catch (const std::exception &e) {
+            std::cerr << "Ошибка: " << e.what() << std::endl;
+        }
+    }
+}
+
+void findBooksByAuthor(std::list<Book> &library) {
+    std::cout << "Для поиска книг по автору введите автора (Имя Отчество Фамилия):\n";
+
+    try {
+        std::string authorStr = checkStrForEmpty(stringFromConsole());
+
+        Author findedAuthor = writeAuthorFromStr(authorStr);
+
+        bool hasBook = false;
+
+        std::cout << "------------------------------\nКниги автора \"" << authorStr << "\":\n------------------------------\n";
+        for (Book &book : library) {
+            std::list<Author> authors = book.getAuthors();
+            for (Author &author : authors) {
+                if (author == findedAuthor) {
+                    hasBook = true;
+                    printBook(book);
+                }
+            }
+        }
+
+        if (!hasBook) {
+            std::cout << "Не найдены.\n";
+        }
+
+    } catch (const std::exception &e) {
+        std::cerr << "Ошибка: " << e.what() << std::endl;
+    }
+}
+
+Author chooseAuthor() {
+    std::cout << "Введите автора (Имя Отчество Фамилия):\n";
+    std::string authorStr = checkStrForEmpty(stringFromConsole());
+    Author findedAuthor = writeAuthorFromStr(authorStr);
+
+    return findedAuthor;
+}
+
+void addAuthorToBook(std::list<Book> &library) {
+    std::cout << "Введите название книги для добавления автора:\n";
+    std::list<Book>::iterator it = findBookByTitle(library);
+
+    if (it != library.end()) {
+        try {
+            Author newAuthor = chooseAuthor();
+            std::list<Author> authors = it->getAuthors();
+            putAuthorInRightPlace(newAuthor, authors);
+            it->setAuthors(authors);
+            std::cout << "Автор добавлен.\n";
+        } catch (...) {
+            std::cerr << "Ошибка добавления автора.\n";
+        }
+    }
+}
+
+void deleteAuthorFromBook(std::list<Book> &library) {
+    std::cout << "Введите название книги для удаления автора:\n";
+    std::list<Book>::iterator it = findBookByTitle(library);
+
+    if (it != library.end() && !it->getAuthors().empty()) {
+        try {
+            Author oddAuthor = chooseAuthor();
+            std::list<Author> authors = it->getAuthors();
+
+            if (authors.size() == 0) {
+                throw std::logic_error("некого удалять.");
+            }
+
+            std::list<Author>::iterator authorsIterator = authors.begin();
+            while (authorsIterator != authors.end() && !(*authorsIterator == oddAuthor)) {
+                ++authorsIterator;
+            }
+
+            if (authorsIterator != authors.end()) {
+                authors.erase(authorsIterator);
+                it->setAuthors(authors);
+                std::cout << "Автор удалён.\n";
+            } else {
+                std::cout << "Автор не найден.\n";
+            }
+
+        } catch (const std::exception &e) {
+            std::cerr << "Ошибка: " << e.what() << std::endl;
+        } catch (...) {
+            std::cerr << "Ошибка удаления автора.\n";
+        }
+    }
 }
 
 int main() {
@@ -229,8 +372,20 @@ int main() {
 
         printBooks(library);
 
-        Add(library);
-        Delete(library);
+        // AddBook(library);
+
+        // DeleteBook(library);
+
+        // std::cout << "Для поиска книги введите название книги:\n";
+        // findBookByTitle(library);
+
+        // findBooksByAuthor(library);
+
+        // addAuthorToBook(library);
+
+        deleteAuthorFromBook(library);
+
+        printBooks(library);
 
     } catch (const std::exception &e) {
         std::cerr << "Ошибка: " << e.what() << std::endl;
