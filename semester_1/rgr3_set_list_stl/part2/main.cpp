@@ -372,16 +372,16 @@ int main() {
 
         printBooks(library);
 
-        // AddBook(library);
+        AddBook(library);
 
-        // DeleteBook(library);
+        DeleteBook(library);
 
-        // std::cout << "Для поиска книги введите название книги:\n";
-        // findBookByTitle(library);
+        std::cout << "Для поиска книги введите название книги:\n";
+        findBookByTitle(library);
 
-        // findBooksByAuthor(library);
+        findBooksByAuthor(library);
 
-        // addAuthorToBook(library);
+        addAuthorToBook(library);
 
         deleteAuthorFromBook(library);
 
