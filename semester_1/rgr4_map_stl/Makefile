@@ -1,3 +1,3 @@
-part2:
-	g++ -Wall -Wextra -fsanitize=address,undefined,leak time_utility.cpp main.cpp -o main.out
+all:
+	g++ -Wall -Wextra -fsanitize=address,undefined src/Mark/mark.cpp src/Student/student.cpp src/Rating/rating.cpp src/Rating/functions.cpp main.cpp -o main.out
 	./main.out
