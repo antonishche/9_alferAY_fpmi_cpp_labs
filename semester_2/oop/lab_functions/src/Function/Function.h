@@ -21,5 +21,7 @@ class Function {
 
   private:
     int id;
+
+  protected:
     static int next_id;
 };

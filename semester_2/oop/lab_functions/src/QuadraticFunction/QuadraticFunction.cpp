@@ -7,6 +7,8 @@ QuadraticFunction::QuadraticFunction(double k1, double k2, double k3)
     if (a == 0) {
         throw std::runtime_error("\'a\' cant be 0 in quadratic functions.");
     }
+
+    next_id++;
 };
 
 double QuadraticFunction::Evaluate(double x) const {

@@ -34,6 +34,12 @@ void fillVec(vector<Function *> &functions) {
     addQuadratic(functions, 0, 0, 0);
     addQuadratic(functions, 5, 1, 1);
     cout << "===added in total: " << functions.size() << "\n";
+
+    for (const Function *f : functions) {
+        cout << f->getId() << ": f(x) = ";
+        f->PrintEquation();
+        cout << endl;
+    }
 }
 
 void countFunctions(const vector<Function *> &functions) {
@@ -88,7 +94,7 @@ void printIf(const string &str, const vector<Function *> &vec,
     if (counter == 0) {
         cout << "No such functions\n";
     } else {
-        cout << "in total: " << counter << '\n';
+        cout << "===In total: " << counter << '\n';
     }
 }
 

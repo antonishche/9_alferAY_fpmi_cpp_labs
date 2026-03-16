@@ -1,7 +1,9 @@
 #include "LinearFunction.h"
 
 LinearFunction::LinearFunction(double k1, double k2)
-    : Function(), a(k1), b(k2) {};
+    : Function(), a(k1), b(k2) {
+    next_id++;
+};
 
 double LinearFunction::Evaluate(double x) const {
     double result = a * x + b;
