@@ -6,6 +6,22 @@ class QuadraticFunction : public Function {
   public:
     QuadraticFunction(double, double, double);
 
+    QuadraticFunction(QuadraticFunction &&other) noexcept
+        : Function(move(other)), a(other.a), b(other.b), c(other.c) {};
+
+    QuadraticFunction &operator=(QuadraticFunction &&other) noexcept {
+        if (this != &other) {
+            Function::operator=(move(other));
+            a = other.a;
+            b = other.b;
+            c = other.c;
+
+            other.a = other.b = other.c = 0;
+        }
+
+        return *this;
+    }
+
     double Evaluate(double) const;
     void Solve() const;
     void PrintEquation() const;
