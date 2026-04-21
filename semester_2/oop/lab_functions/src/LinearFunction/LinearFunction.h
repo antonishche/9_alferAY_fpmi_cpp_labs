@@ -7,11 +7,11 @@ class LinearFunction : public Function {
     LinearFunction(double, double);
 
     LinearFunction(LinearFunction &&other) noexcept
-        : Function(move(other)), a(other.a), b(other.b) {}
+        : Function(std::move(other)), a(other.a), b(other.b) {}
 
     LinearFunction &operator=(LinearFunction &&other) noexcept {
         if (this != &other) {
-            Function::operator=(move(other));
+            Function::operator=(std::move(other));
             a = other.a;
             b = other.b;
 

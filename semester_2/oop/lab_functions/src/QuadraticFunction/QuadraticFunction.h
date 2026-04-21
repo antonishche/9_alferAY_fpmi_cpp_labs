@@ -7,11 +7,11 @@ class QuadraticFunction : public Function {
     QuadraticFunction(double, double, double);
 
     QuadraticFunction(QuadraticFunction &&other) noexcept
-        : Function(move(other)), a(other.a), b(other.b), c(other.c) {};
+        : Function(std::move(other)), a(other.a), b(other.b), c(other.c) {};
 
     QuadraticFunction &operator=(QuadraticFunction &&other) noexcept {
         if (this != &other) {
-            Function::operator=(move(other));
+            Function::operator=(std::move(other));
             a = other.a;
             b = other.b;
             c = other.c;

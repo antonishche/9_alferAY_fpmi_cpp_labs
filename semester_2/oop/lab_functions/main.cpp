@@ -1,4 +1,5 @@
 #include "src/Function/Function.h"
+#include "src/FunctionFactory/FunctionFactory.h"
 #include "src/LinearFunction/LinearFunction.h"
 #include "src/QuadraticFunction/QuadraticFunction.h"
 
@@ -12,27 +13,23 @@ void clearVec(vector<Function *> &functions) {
     }
 }
 
-void addLinear(vector<Function *> &functions, double a, double b) {
-    functions.push_back(new LinearFunction(a, b));
-}
-
-void addQuadratic(vector<Function *> &functions, double a, double b, double c) {
-    try {
-        functions.push_back(new QuadraticFunction(a, b, c));
-    } catch (const std::exception &e) {
-        std::cerr << "Error: " << e.what() << std::endl;
-    }
-}
-
 void fillVec(vector<Function *> &functions) {
     cout << "\n===filling functions...\n";
-    addLinear(functions, 1, 2);
-    addLinear(functions, 2, 3);
-    addLinear(functions, 0, 9);
-    addQuadratic(functions, 1, 2, 1);
-    addQuadratic(functions, 3, -6, -5);
-    addQuadratic(functions, 0, 0, 0);
-    addQuadratic(functions, 5, 1, 1);
+
+    vector<FunctionFactory *> factories;
+    factories.push_back(new LinearFactory(1, 2));
+    factories.push_back(new LinearFactory(2, 3));
+    factories.push_back(new LinearFactory(0, 9));
+    factories.push_back(new QuadraticFactory(1, 2, 1));
+    factories.push_back(new QuadraticFactory(3, -6, -5));
+    factories.push_back(new QuadraticFactory(0, 0, 0));
+    factories.push_back(new QuadraticFactory(5, 1, 1));
+
+    for (const FunctionFactory *factory : factories) {
+        functions.push_back(factory->create());
+        delete factory;
+    }
+
     cout << "===added in total: " << functions.size() << "\n";
 
     for (const Function *f : functions) {
